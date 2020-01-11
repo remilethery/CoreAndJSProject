@@ -2,38 +2,42 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
+using SpyStore.Models.Entities.Base;
 
-[Table("Products", Schema = "Store")]
-public class Product : EntityBase
+namespace SpyStore.Models.Entities
 {
-    public ProductDetails Details { get; set; } = new ProductDetails();
+    [Table("Products", Schema = "Store")]
+    public class Product : EntityBase
+    {
+        public ProductDetails Details { get; set; } = new ProductDetails();
 
-    public bool isFeatured { get; set; }
+        public bool isFeatured { get; set; }
 
-    [DataType(DataType.Currency)]
-    public decimal UnitCost { get; set; }
+        [DataType(DataType.Currency)]
+        public decimal UnitCost { get; set; }
 
-    [DataType(DataType.Currency)]
-    public decimal CurrentPrice { get; set; }
+        [DataType(DataType.Currency)]
+        public decimal CurrentPrice { get; set; }
 
-    public int UnitsInStock { get; set; }
+        public int UnitsInStock { get; set; }
 
-    [Required]
-    public int CategoryId { get; set; }
+        [Required]
+        public int CategoryId { get; set; }
 
-    [InverseProperty(nameof(ShoppingCartRecord.ProductNavigation))]
-    public List<ShoppingCartRecord> ShoppingCartRecords { get; set; }
-        = new List<ShoppingCartRecord>();
+        [JsonIgnore]
+        [ForeignKey(nameof(CategoryId))]
+        public Category CategoryNavigation { get; set; }
 
-    [InverseProperty(nameof(OrderDetail.ProductNavigation))]
-    public List<OrderDetail> OrderDetails { get; set; }
-        = new List<OrderDetail>();
+        [InverseProperty(nameof(ShoppingCartRecord.ProductNavigation))]
+        public List<ShoppingCartRecord> ShoppingCartRecords { get; set; }
+            = new List<ShoppingCartRecord>();
 
-    [JsonIgnore]
-    [ForeignKey(nameof(CategoryId))]
-    public Category CategoryNavigation { get; set; }
+        [InverseProperty(nameof(OrderDetail.ProductNavigation))]
+        public List<OrderDetail> OrderDetails { get; set; }
+            = new List<OrderDetail>();
 
-    [NotMapped]
-    public string CategoryName => CategoryNavigation?.CategoryName;
+        [NotMapped]
+        public string CategoryName => CategoryNavigation?.CategoryName;
 
+    }
 }
