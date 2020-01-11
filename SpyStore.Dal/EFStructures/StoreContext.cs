@@ -16,6 +16,7 @@ public class StoreContext : DbContext
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderDetail> OrderDetails { get; set; }
+    public DbSet<Product> Products { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -45,6 +46,29 @@ public class StoreContext : DbContext
         modelBuilder.Entity<OrderDetail>(entity =>
         {
             entity.Property(e => e.UnitCost).HasColumnType("money");
+        });
+
+        modelBuilder.Entity<Product>(entity =>
+        {
+            entity.Property(e => e.UnitCost).HasColumnType("money"):;
+            entity.Property(e => e.CurrentPrice).HasColumnType("money");
+            entity.OwnsOne(order => order.Details,
+            productDetails =>
+            {
+                productDetails.Property(product =>
+                   product.Description).HasColumnName(nameof(ProductDetails.Description));
+                productDetails.Property(product =>
+                   product.ModelName).HasColumnName(nameof(ProductDetails.ModelName));
+                productDetails.Property(product =>
+                   product.ModelNumber).HasColumnName(nameof(ProductDetails.ModelNumber));
+                productDetails.Property(product =>
+                   product.ProductImage).HasColumnName(nameof(ProductDetails.ProductImage));
+                productDetails.Property(product =>
+                   product.ProductImageLarge).HasColumnName(nameof(ProductDetails.ProductImageLarge));
+                productDetails.Property(product =>
+                   product.ProductImageThumb).HasColumnName(nameof(ProductDetails.ProductImageThumb));
+
+            });
         });
     }
 }
