@@ -1,7 +1,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
-using SpyStore.Models.Entities;
-using SpyStore.Models.Entities.Base;
+
 
 public class StoreContext: DbContext
 {
@@ -10,6 +9,9 @@ public class StoreContext: DbContext
     {
 
     }
+
+    public DbSet<Category> Categories { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
