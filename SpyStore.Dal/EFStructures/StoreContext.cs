@@ -17,7 +17,7 @@ public class StoreContext : DbContext
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderDetail> OrderDetails { get; set; }
     public DbSet<Product> Products { get; set; }
-
+    public DbSet<ShoppingCartRecord> ShoppingCartRecords { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -28,6 +28,11 @@ public class StoreContext : DbContext
                 e.EmailAddress).HasName("IX_Customers").IsUnique();
         });
 
+        // Makes so every query is built upon customer ID
+        // No need to look for it every time
+        modelBuilder.Entity<Order>()
+            .HasQueryFilter(x => x.CustomerId == CustomerId);
+
         // Makes so OrderDate and ShipDate are set by system
         modelBuilder.Entity<Order>(entity =>
         {
@@ -37,22 +42,19 @@ public class StoreContext : DbContext
                 e.ShipDate).HasColumnType("datetime").HasDefaultValueSql("getdate()");
         });
 
-        // Makes so every query is built upon customer ID
-        // No need to look for it every time
-        modelBuilder.Entity<Order>()
-            .HasQueryFilter(x => x.CustomerId == CustomerId);
-
         // Makes so UnitCost is of money column type
         modelBuilder.Entity<OrderDetail>(entity =>
         {
             entity.Property(e => e.UnitCost).HasColumnType("money");
         });
 
+        // Makes so both UnitCost and CurrentPrice are of money type
+        // Also makes the Product owns a Product Detail
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.Property(e => e.UnitCost).HasColumnType("money"):;
+            entity.Property(e => e.UnitCost).HasColumnType("money");
             entity.Property(e => e.CurrentPrice).HasColumnType("money");
-            entity.OwnsOne(order => order.Details,
+            entity.OwnsOne(o => o.Details,
             productDetails =>
             {
                 productDetails.Property(product =>
@@ -67,8 +69,25 @@ public class StoreContext : DbContext
                    product.ProductImageLarge).HasColumnName(nameof(ProductDetails.ProductImageLarge));
                 productDetails.Property(product =>
                    product.ProductImageThumb).HasColumnName(nameof(ProductDetails.ProductImageThumb));
-
             });
         });
+
+        // Makes so the Shopping Cart is filtered with the current customer
+        modelBuilder.Entity<ShoppingCartRecord>()
+            .HasQueryFilter(x => x.CustomerId == CustomerId);
+
+        // Makes so the ShoppingCartRecord sets datetime to system by default
+        // And quantity of one product to 1 by default
+        // Also sets the index with the productId and customerID
+        modelBuilder.Entity<ShoppingCartRecord>(entity =>
+        {
+            entity.HasIndex(
+                e => new { ShoppingCartRecordId = e.Id, e.ProductId, e.CustomerId })
+                .HasName("IX_ShoppingCart").IsUnique();
+            entity.Property(e => e.DateCreated)
+                .HasColumnType("datetime").HasDefaultValueSql("getdate()");
+            entity.Property(e => e.Quantity).HasDefaultValue(1);
+        });
+
     }
 }
