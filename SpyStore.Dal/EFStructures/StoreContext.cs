@@ -2,6 +2,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using SpyStore.Models.Entities;
 using SpyStore.Models.Entities.Base;
+using SpyStore.Models.ViewModels;
 
 namespace SpyStore.Dal.EFStructures
 {
@@ -15,12 +16,21 @@ namespace SpyStore.Dal.EFStructures
 
         }
 
+        // Maps DB Based function to C# functions, allowing it to be used
+        [DbFunction("GetOrderTotal", Schema = "Store")]
+        public static int GetOrderTotal(int orderId)
+        {
+            //Code in here doesn't matter
+            throw new Exception();
+        }
+
         public DbSet<Category> Categories { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ShoppingCartRecord> ShoppingCartRecords { get; set; }
+        public DbQuery<CartRecordWithProductInfo> CartRecordWithProductInfos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -99,6 +109,9 @@ namespace SpyStore.Dal.EFStructures
                     .HasColumnType("datetime").HasDefaultValueSql("getdate()");
                 entity.Property(e => e.Quantity).HasDefaultValue(1);
             });
+
+            modelBuilder.Query<CartRecordWithProductInfo>()
+                .ToView("CartRecordWithProductInfo", "Store");
 
         }
     }
