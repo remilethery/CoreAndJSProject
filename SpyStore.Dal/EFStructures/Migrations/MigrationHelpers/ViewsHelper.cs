@@ -15,7 +15,7 @@ namespace SpyStore.Dal.EFStructures.MigrationHelpers
                         od.Quantity * od.UnitCost AS LineItemTotal,
                         p.ModelName, p.Description, p.ModelNumber, p.ProductImage,
                         p.ProductImageLarge, p.ProductImageThumb, p.CategoryId,
-                        p.UnitsInStock, p.CurrentPrise, c.CategoryName
+                        p.UnitsInStock, p.CurrentPrice, c.CategoryName
                     FROM Store.OrderDetails od
                         INNER JOIN Store.Orders o ON o.Id = od.OrderId
                         INNER JOIN Store.Products AS p ON  od.ProductId = p.Id
