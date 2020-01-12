@@ -23,10 +23,10 @@ namespace SpyStore.Dal.EFStructures.MigrationHelpers
             ");
         }
 
-        public static void CreateRecordWithProductInfoView(MigrationBuilder migrationBuilder)
+        public static void CreateCartRecordWithProductInfoView(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@"
-                CREATE VIEW [Store].[OrderDetailWithProductInfo] AS
+                CREATE VIEW [Store].[CartRecordDetailWithProductInfo] AS
                     SELECT scr.Id, scr.TimeStamp, scr.DateCreated, scr.CustomerId,
                         scr.Quantity, scr.LineItemTotal, scr.ProductId, p.ModelName,
                         p.Description, p.ModelNumber, p.ProductImage,

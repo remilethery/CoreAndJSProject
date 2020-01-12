@@ -10,7 +10,7 @@ using SpyStore.Dal.EFStructures;
 namespace SpyStore.Dal.EFStructures.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20200112091818_TSQL")]
+    [Migration("20200112111050_TSQL")]
     partial class TSQL
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

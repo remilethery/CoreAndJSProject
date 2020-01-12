@@ -8,15 +8,15 @@ namespace SpyStore.Dal.EFStructures.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             ViewsHelper.CreateOrderDetailWithProductInfoView(migrationBuilder);
-            ViewsHelper.CreateRecordWithProductInfoView(migrationBuilder);
+            ViewsHelper.CreateCartRecordWithProductInfoView(migrationBuilder);
             FunctionsHelpers.CreateOrderTotalFunction(migrationBuilder);
             SprocsHelper.CreatePurchaseSproc(migrationBuilder);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            ViewsHelper.DropCartRecordWithProductInfoView(migrationBuilder);
             ViewsHelper.DropOrderDetailWithProductInfoView(migrationBuilder);
+            ViewsHelper.DropCartRecordWithProductInfoView(migrationBuilder);
             FunctionsHelpers.DropOrderTotalFunction(migrationBuilder);
             SprocsHelper.DropPurchaseSproc(migrationBuilder);
         }
