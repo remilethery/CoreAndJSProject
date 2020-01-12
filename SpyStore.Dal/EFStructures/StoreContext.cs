@@ -31,6 +31,7 @@ namespace SpyStore.Dal.EFStructures
         public DbSet<Product> Products { get; set; }
         public DbSet<ShoppingCartRecord> ShoppingCartRecords { get; set; }
         public DbQuery<CartRecordWithProductInfo> CartRecordWithProductInfos { get; set; }
+        public DbQuery<OrderDetailWithProductInfo> OrderDetailWithProductInfos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -112,6 +113,9 @@ namespace SpyStore.Dal.EFStructures
 
             modelBuilder.Query<CartRecordWithProductInfo>()
                 .ToView("CartRecordWithProductInfo", "Store");
+
+            modelBuilder.Query<OrderDetailWithProductInfo>()
+                .ToView("OrderDetailWithProductInfo", "Store");
 
         }
     }
