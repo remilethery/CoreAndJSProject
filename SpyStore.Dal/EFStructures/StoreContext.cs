@@ -37,18 +37,26 @@ namespace SpyStore.Dal.EFStructures
                 .HasQueryFilter(x => x.CustomerId == CustomerId);
 
             // Makes so OrderDate and ShipDate are set by system
+            // Also sets OrderTotal to money and computed with Stored Function
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.Property(e =>
                     e.OrderDate).HasColumnType("datetime").HasDefaultValueSql("getdate()");
                 entity.Property(e =>
                     e.ShipDate).HasColumnType("datetime").HasDefaultValueSql("getdate()");
+                entity.Property(e => e.OrderTotal)
+                    .HasColumnType("money")
+                    .HasComputedColumnSql("Store.GetOrderTotal([Id])");
             });
 
             // Makes so UnitCost is of money column type
+            // Same for LineItemTotal + Configure it to computed with formula
             modelBuilder.Entity<OrderDetail>(entity =>
             {
                 entity.Property(e => e.UnitCost).HasColumnType("money");
+                entity.Property(e => e.LineItemTotal)
+                    .HasColumnType("money")
+                    .HasComputedColumnSql("[Quantity]*[UnitCost]");
             });
 
             // Makes so both UnitCost and CurrentPrice are of money type
