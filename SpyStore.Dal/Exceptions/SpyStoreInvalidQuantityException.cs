@@ -2,11 +2,11 @@ using System;
 
 namespace SpyStore.Dal.Exceptions
 {
-    public class SpyStoreQuantityException: SpyStoreException
+    public class SpyStoreInvalidQuantityException: SpyStoreException
     {
-        public SpyStoreQuantityException() { }
-        public SpyStoreQuantityException(string message) : base(message) { }
-        public SpyStoreQuantityException(string message, Exception innerException) :
+        public SpyStoreInvalidQuantityException() { }
+        public SpyStoreInvalidQuantityException(string message) : base(message) { }
+        public SpyStoreInvalidQuantityException(string message, Exception innerException) :
             base(message, innerException)
         { }
     }

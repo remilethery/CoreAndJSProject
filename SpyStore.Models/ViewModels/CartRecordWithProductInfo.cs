@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace SpyStore.Models.ViewModels
 {
 
-    public class CartRecordWithProductInfo : EntityBase
+    public class CartRecordWithProductInfo : ShoppingCartRecordBase
     {
         public new int Id { get; set; }
 
