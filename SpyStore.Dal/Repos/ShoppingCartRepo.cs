@@ -170,6 +170,7 @@ namespace SpyStore.Dal.Repos
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return -1;
             }
             return (int)orderIdParam.Value;
