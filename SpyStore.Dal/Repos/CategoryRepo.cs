@@ -21,8 +21,7 @@ namespace SpyStore.Dal.Repos
         {
         }
 
-        public override IEnumerable<Category> GetAll()
-            => base.GetAll(x => x.CategoryName);
+        public override IEnumerable<Category> GetAll() => base.GetAll(x => x.CategoryName);
 
     }
 }
