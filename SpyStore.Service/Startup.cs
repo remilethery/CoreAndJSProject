@@ -19,6 +19,7 @@ using SpyStore.Dal.EFStructures;
 using SpyStore.Dal.Initialization;
 using SpyStore.Dal.Repos;
 using SpyStore.Dal.Repos.Interfaces;
+using SpyStore.Service.Filters;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace SpyStore.Service
@@ -39,7 +40,7 @@ namespace SpyStore.Service
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddMvcCore()
+            services.AddMvcCore(config => config.Filters.Add(new SpyStoreExceptionFilter(_env)))
                 .AddJsonFormatters(j =>
                 {
                     j.ContractResolver = new DefaultContractResolver();
