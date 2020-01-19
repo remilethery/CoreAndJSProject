@@ -20,7 +20,7 @@ namespace SpyStore.Service.Controllers {
         [Produces("application/json")]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
-        public ActionResult<IEnumerable<Customer>> GetAction()
+        public ActionResult<IEnumerable<Customer>> Get()
             => Ok(_repo.GetAll(x => x.FullName).ToList());
 
         [HttpGet("{id}",Name = "GetCustomer")]
@@ -28,7 +28,7 @@ namespace SpyStore.Service.Controllers {
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public ActionResult<Customer> GetAction(int id)
+        public ActionResult<Customer> Get(int id)
         {
             var item = _repo.Find(id);
             if (item == null) {
